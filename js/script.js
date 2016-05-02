@@ -42,7 +42,7 @@ $('#design').change(function(e) {
   var designSelect = $(this);
   var designDiv = designSelect.next();
   var designListItems = designDiv.children().children();
-  var designValue = designSelect.getVal();
+  var designValue = designSelect.val() === null ? "" : designSelect.val();
   var colorDiv = colorSelect.next();
   var colorLabel = colorSelect.prev();
   var designOptionIndex;
@@ -57,7 +57,7 @@ $('#design').change(function(e) {
     }
   });
 
-  restoreColorOptions()
+  restoreColorOptions();
 
   if (designValue === "") {
     // Hide the color options display if there's not a design picked
@@ -89,16 +89,20 @@ $('#design').change(function(e) {
       }
     });
     // Recreate colorDiv
-    colorDiv.remove();
-    colorSelect.each(function() {
-      $(this).convertSelect(0);
-    });
+    if(typeof $().convertSelect == "function") {
+      colorDiv.remove();
+      colorSelect.each(function() {
+        $(this).convertSelect(0);
+      });
+    }
   }
   // Recreate designDiv, show last selected item
-  designDiv.remove();
-  designSelect.each(function() {
-    $(this).convertSelect(designOptionIndex);
-  });
+  if(typeof $().convertSelect == "function") {
+    designDiv.remove();
+    designSelect.each(function() {
+      $(this).convertSelect(designOptionIndex);
+    });
+  }
 });
 
 
@@ -143,7 +147,7 @@ $('[type="text"]').first().focus();
 
 
 $('#title').change(function() {
-  if($(this).getVal() === "other") {
+  if($(this).val() === "other") {
     otherTitle.hide();
     $(this).parent().append(otherTitle);
     otherTitle.fadeIn('slow');
@@ -203,17 +207,10 @@ checkbox.map(function(pair) {
 
 activities.each(function(index) {
   $(this).change(function() {
-    if(index === 0) {
-      var cost = 200;
-    } else {
-      var cost = 100;
-    }
-    if($(this).prop('checked') === true) {
-      console.log
-      totalCost += cost;
-    } else {
-      totalCost -= cost;
-    }
+    var isChecked = $(this).prop('checked');
+    var cost = index === 0 ? 200 : 100;
+    var change = isChecked ? cost : -cost;
+    totalCost += change;
     $('.totalCost').remove();
     if(totalCost !== 0) {
       $('.activities').append('<h2 class="totalCost">Your total cost is currently $' + totalCost + ' dollars.</h2>');
@@ -233,7 +230,7 @@ $('#paypal').hide();
 $('#bitcoin').hide();
 
 payment.change(function() {
-  var that = $(this).getVal();
+  var that = $(this).val();
   if (that === "credit card") {
     $('#credit-card').show();
     $('#paypal').hide();
@@ -298,8 +295,6 @@ var errorMessages =
      var errors = "";
      validation.map(function(validator, index) {
        if(!validator) {
-         console.log(errors);
-         console.log(errorMessages[index]);
          errors += errorMessages[index] + '\n';
        }
      });

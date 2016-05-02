@@ -16,7 +16,7 @@ var selectDivStyles = {
   "background-image": backgroundImage,
   "background-color": backgroundColor,
   "background-repeat": "no-repeat",
-  "padding": selectPadding }
+  "padding": selectPadding };
 var preventChange = false;
 var optionString = '<li class="newOption"></li>';
 var selectDivString = '<div class="newSelect"></div>';
@@ -41,13 +41,12 @@ function optionSelect(e) {
   selectDiv.css(selectDivStyles);
   selectBoxOptionSelected.prop("selected", true);
 
-  if(!preventChange) { selectBox.trigger('change') };
+  if(!preventChange) { selectBox.trigger('change'); }
 }
 
 
 function displayOptions(e) {
   e.stopPropagation();
-  var parentSelectDiv = $(this).parent().parent();
 
   $(this).off().siblings().off(); // Important: removes previous event handlers
   $(this).click(optionSelect);
@@ -55,10 +54,6 @@ function displayOptions(e) {
   $(this).siblings().show('slow');
 }
 
-
-$.prototype.getVal = function() {
-  return this.children(':selected').attr('value');
-}
 
 $.prototype.passAttr = function (sender) {
   var that = this;
@@ -70,7 +65,8 @@ $.prototype.passAttr = function (sender) {
   });
 
   return that;
-}
+};
+
 
 $.prototype.convertSelect = function(activeOptionIndex) {
   var selectElement = this;
@@ -103,7 +99,8 @@ $.prototype.convertSelect = function(activeOptionIndex) {
   var imageOffset = $(newSelect).width() - imageOffsetPixels;
   $(newSelect).css(selectDivStyles);
   $(newSelect).css("background-position", imageOffset);
-}
+};
+
 
 // Convert all the selects into divs
 $('select').each(function() {
