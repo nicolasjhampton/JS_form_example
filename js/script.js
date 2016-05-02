@@ -1,197 +1,101 @@
 'use strict';
 
 /*
- *  Style the "select" menus (drop down menus) on the form
- *  so they match the styling of the text fields.
- *
- */
-
-
-var backgroundColor = $('input').css('background-color');
-var backgroundImage = "url(https://upload.wikimedia.org/wikipedia/commons/f/f1/MediaWiki_Vector_skin_action_arrow.svg)";
-var selectPadding = ".1em";
-var selectDivStyles = {
-  "background-image": backgroundImage,
-  "background-color": backgroundColor,
-  "background-repeat": "no-repeat",
-  "padding": selectPadding }
-var preventChange = false;
-var optionString = '<li class="newOption"></li>';
-var selectDivString = '<div class="newSelect"></div>';
-var selectListString = '<ul class="newSelectList"></ul>';
-var selectListStyles = {'list-style': 'none', 'padding-left': '0px', "padding-right": "50px"};
-var optionItemStyles = {'display': 'none', "border-bottom": "solid black 1px", "margin-bottom": "10px", "padding": "5px"};
-
-
-$.prototype.getVal = function() {
-  return this.children(':selected').attr('value');
-}
-
-$.prototype.passAttr = function (sender) {
-  var that = this;
-
-  Object.keys(sender.attributes).map(function(key) {
-    var attrName = $(sender.attributes[key])['0']['name'];
-    var attrValue = $(sender.attributes[key])['0']['value'];
-    that.attr(attrName, attrValue);
-  });
-
-  return that;
-}
-
-function optionSelect(e) {
-  e.stopPropagation();
-
-  var thisOptionItem = this;
-  var selectDiv = $(this).parent().parent();
-  var imageOffset = selectDiv.width() - 20;
-  var selectBox = selectDiv.prev();
-  var optionSelectorString = '[value="' + $(thisOptionItem).attr('value') + '"]';
-  var selectBoxOptionSelected = selectBox.children(optionSelectorString);
-
-  $(thisOptionItem).css({'display': ''});
-  $(thisOptionItem).siblings().css({'display': 'none'});
-  $(thisOptionItem).click(displayOptions);
-  selectDiv.css("background-position", imageOffset);
-  selectDiv.css(selectDivStyles);
-  selectBoxOptionSelected.prop("selected", true);
-
-  if(!preventChange) { selectBox.trigger('change') };
-}
-
-
-function displayOptions(e) {
-  e.stopPropagation();
-  var parentSelectDiv = $(this).parent().parent();
-
-  $(this).off().siblings().off(); // Important: removes previous event handlers
-  $(this).click(optionSelect);
-  $(this).siblings().click(optionSelect);
-  $(this).siblings().show('slow');
-}
-
-
-$.prototype.convertSelect = function(activeOptionIndex) {
-  var newSelect = $(selectDivString);
-  var selectList = $(selectListString);
-
-  newSelect.append(selectList);
-  selectList.css(selectListStyles);
-
-  this.children().each(function(index) {
-
-    var optionLink = $(optionString);
-
-    selectList.append(optionLink);
-    optionLink.css(optionItemStyles);
-    optionLink.passAttr(this);
-    optionLink.html($(this).html());
-
-    if(index === activeOptionIndex) {
-      optionLink.off();
-      optionLink.click(displayOptions);
-      optionLink.css({'display': ''});
-    }
-  });
-
-  // Hide the select and append the selectDiv next to it
-  this.css({'display': 'none'}).parent().append(newSelect);
-
-  var imageOffset = $(newSelect).width() - 20;
-  $(newSelect).css(selectDivStyles);
-  $(newSelect).css("background-position", imageOffset);
-}
-
-
-$('select').each(function() {
-  $(this).convertSelect(0);
-});
-
-
-/*
  *  For the T-Shirt color menu, only display the options that
  *  match the design selected in the "Design" menu. Also, hide
  *  the color menu until a design has been chosen.
  */
 
-$('#color').next().hide().prev().prev().hide();
+var colorSelect = $('#color');
+var jsPunsValues = ["cornflowerblue", "darkslategrey", "gold"];
+var jsHeartValues = ["tomato", "steelblue", "dimgrey"];
+var punsOptions = '<option value="cornflowerblue">Cornflower Blue (JS Puns shirt only)</option><option value="darkslategrey">Dark Slate Grey (JS Puns shirt only)</option><option value="gold">Gold (JS Puns shirt only)</option>';
+var heartOptions = '<option value="tomato">Tomato (I &#9829; JS shirt only)</option><option value="steelblue">Steel Blue (I &#9829; JS shirt only)</option><option value="dimgrey">Dim Grey (I &#9829; JS shirt only)</option>';
 
+
+/* helper function for design event handler */
+function restoreColorOptions() {
+  var colorChildren = colorSelect.children();
+
+  // If only three of the six options are left...
+  if(colorChildren.length === 3) {
+    // check if the first option is still a punOption...
+    if($(colorChildren[0]).val() === "cornflowerblue") {
+      colorSelect.append(heartOptions);
+    } else { // else if the first option is not a punOption...
+      colorSelect.append(punsOptions);
+    }
+  // else if all the options are gone...
+  } else if (colorChildren.length === 0) {
+    // add all the options back.
+    colorSelect.append(punsOptions).append(heartOptions);
+  }
+}
+
+// Hides the color display initially, as no design has been chosen
+colorSelect.next().hide().prev().prev().hide();
+
+// On change listener for the design select
 $('#design').change(function(e) {
   e.stopPropagation();
 
   var designSelect = $(this);
   var designDiv = designSelect.next();
-
-  var punsOptions = '<option value="cornflowerblue">Cornflower Blue (JS Puns shirt only)</option><option value="darkslategrey">Dark Slate Grey (JS Puns shirt only)</option><option value="gold">Gold (JS Puns shirt only)</option>';
-  var heartOptions = '<option value="tomato">Tomato (I &#9829; JS shirt only)</option><option value="steelblue">Steel Blue (I &#9829; JS shirt only)</option><option value="dimgrey">Dim Grey (I &#9829; JS shirt only)</option>';
-  var colorSelect = $('#color');
-
-  var colorChildren = colorSelect.children();
-  var selectValue = designSelect.getVal();
-
+  var designListItems = designDiv.children().children();
+  var designValue = designSelect.getVal();
+  var colorDiv = colorSelect.next();
+  var colorLabel = colorSelect.prev();
   var designOptionIndex;
 
-  designDiv.children().children().off().each(function(index) {
-    if($(this).attr('value') === selectValue) {
+  // Remove all event handlers from the old designDiv list items
+  designListItems.off();
+  // Find list item that was selected and store it's array position
+  designListItems.each(function(index) {
+    if($(this).attr('value') === designValue) {
       designOptionIndex = index;
       return false;
     }
   });
 
+  restoreColorOptions()
 
-  if(colorChildren.length === 3) {
-
-    if($(colorChildren[0]).val() === "cornflowerblue") {
-      colorSelect.append(heartOptions);
-
-    } else {
-      colorSelect.append(punsOptions);
-
-    }
-
-  } else if (colorChildren.length === 0) {
-
-    colorSelect.append(punsOptions).append(heartOptions);
-
-  }
-
-
-  if (selectValue === "") {
-
-    colorSelect.next().hide().prev().prev().hide();
+  if (designValue === "") {
+    // Hide the color options display if there's not a design picked
+    colorDiv.hide();
+    colorLabel.hide();
 
   } else {
+    // show color options display
+    colorDiv.show();
+    colorLabel.show();
 
-    colorSelect.next().show().prev().prev().show();
-
+    // detach and store all the option elements for color select element
     var allColorOptions = colorSelect.children().detach();
 
-    allColorOptions.each(function() {
+    allColorOptions.each(function() { // Go through each option element
+      var colorOption = $(this);
+      var colorOptionValue = colorOption.val();
 
-      var option = $(this);
+      if(designValue === "js puns" &&
+         jsPunsValues.indexOf(colorOptionValue) !== -1) {
 
-      var optionValue = option.val();
+          colorSelect.append(colorOption);
 
-      if(selectValue === "js puns") {
+      } else if
+        (designValue === "heart js" &&
+         jsHeartValues.indexOf(colorOptionValue) !== -1) {
 
-        if(optionValue === "cornflowerblue" || optionValue === "darkslategrey" || optionValue === "gold") {
-          colorSelect.append(option);
-
-        }
-      } else if (selectValue === "heart js") {
-
-        if(optionValue === "tomato" || optionValue === "steelblue" || optionValue === "dimgrey") {
-          colorSelect.append(option);
-
-        }
+          colorSelect.append(colorOption);
       }
     });
-    colorSelect.next().remove();
+    // Recreate colorDiv
+    colorDiv.remove();
     colorSelect.each(function() {
       $(this).convertSelect(0);
     });
   }
-  designSelect.next().remove();
+  // Recreate designDiv, show last selected item
+  designDiv.remove();
   designSelect.each(function() {
     $(this).convertSelect(designOptionIndex);
   });
@@ -236,6 +140,7 @@ $('[type="text"]').first().focus();
  *  Reveal a text field when the "Other" option is selected
  *  from the "Job Role" drop down menu
  */
+
 
 $('#title').change(function() {
   if($(this).getVal() === "other") {
@@ -327,7 +232,7 @@ $('#credit-card').hide();
 $('#paypal').hide();
 $('#bitcoin').hide();
 
-$('#payment').change(function() {
+payment.change(function() {
   var that = $(this).getVal();
   if (that === "credit card") {
     $('#credit-card').show();
@@ -344,7 +249,60 @@ $('#payment').change(function() {
   }
 });
 
+
 /*
- *  Todo: Validation
+ *  Validation
+ *  Display error messages and don't let the user submit the form
  *
  */
+
+var emailPattern = new RegExp(/^[_a-zA-Z0-9]+@[-_a-zA-Z0-9]+\.[-_a-zA-Z0-9]+$/);
+var cardNumPattern = new RegExp(/^[0-9]{4}-?[0-9]{4}-?[0-9]{4}-?[0-9]{4}$/);
+var zipPattern = new RegExp(/^[0-9]{5}$/);
+var cvvPattern = new RegExp(/^[0-9]{3}$/);
+
+var errorMessages =
+  [
+    "Your name is empty!",
+    "Please enter a vaild email: you@who.huh",
+    "You must select at least one activity.",
+    "Please select a payment option.",
+    "Invalid credit card number!",
+    "Please enter your 4 digit billing zip code",
+    "Invalid security code!"];
+
+
+ $('form').submit(function(e) {
+
+   var nameFilled = ($('#name').val() !== "");
+
+   var emailMatches = emailPattern.test($('#mail').val());
+
+   var activitiesSelected = ($('input[type="checkbox"]:checked').length !== 0);
+
+   var paymentSelected = ($('#payment').val() !== "select_method");
+
+   var validation = [nameFilled, emailMatches, activitiesSelected, paymentSelected];
+
+   if($('#payment').val() === "credit card") {
+
+     var cardNumValid = cardNumPattern.test($('#cc-num').val());
+     var zipVaild = zipPattern.test($('#zip').val());
+     var cvvValid = cvvPattern.test($('#cvv').val());
+
+     validation.push(cardNumValid, zipVaild, cvvValid);
+   }
+
+   if(validation.includes(false)) {
+     e.preventDefault();
+     var errors = "";
+     validation.map(function(validator, index) {
+       if(!validator) {
+         console.log(errors);
+         console.log(errorMessages[index]);
+         errors += errorMessages[index] + '\n';
+       }
+     });
+     alert(errors);
+   }
+ });
