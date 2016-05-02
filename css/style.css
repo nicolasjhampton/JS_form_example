@@ -77,7 +77,8 @@ label {
 }
 
 input,
-select {
+select,
+.newSelect {
 	margin-bottom: 1.125em;
 }
 
@@ -85,7 +86,8 @@ select {
   position: relative;
 }
 
-input {
+input,
+.newSelect {
 	font-size: 1em;
 	font-weight: 500;
 	padding: .8em;
@@ -93,6 +95,11 @@ input {
 	border: 2px solid #c1deeb;
 	outline: none;
 }
+
+/*.newSelect {
+  ;
+
+}*/
 
 input:focus {
 	background: #fff;
