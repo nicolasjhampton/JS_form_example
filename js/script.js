@@ -1,4 +1,6 @@
-'use strict';
+!function($) {
+  'use strict';
+
 
 /*
  *  For the T-Shirt color menu, only display the options that
@@ -89,18 +91,20 @@ $('#design').change(function(e) {
       }
     });
     // Recreate colorDiv
-    if(typeof $().convertSelect == "function") {
+    if(typeof Select == "function") {
       colorDiv.remove();
       colorSelect.each(function() {
-        $(this).convertSelect(0);
+        var select = new Select(this);
+        select.convertSelect(0);
       });
     }
   }
   // Recreate designDiv, show last selected item
-  if(typeof $().convertSelect == "function") {
+  if(typeof Select == "function") {
     designDiv.remove();
     designSelect.each(function() {
-      $(this).convertSelect(designOptionIndex);
+      var select = new Select(this);
+      select.convertSelect(designOptionIndex);
     });
   }
 });
@@ -301,3 +305,8 @@ var errorMessages =
      alert(errors);
    }
  });
+
+
+}(jQuery);
+
+// call apply and bind

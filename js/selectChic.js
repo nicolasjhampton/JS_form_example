@@ -1,3 +1,4 @@
+!function($) {
 'use strict';
 
 /*
@@ -28,7 +29,7 @@ function optionSelect(e) {
   e.stopPropagation();
 
   var thisOptionItem = this;
-  var selectDiv = $(this).parent().parent();
+  var selectDiv = $(thisOptionItem).parent().parent();
   var imageOffset = selectDiv.width() - imageOffsetPixels;
   var selectBox = selectDiv.prev();
   var optionSelectorString = '[value="' + $(thisOptionItem).attr('value') + '"]';
@@ -106,3 +107,7 @@ $.prototype.convertSelect = function(activeOptionIndex) {
 $('select').each(function() {
   $(this).convertSelect(0);
 });
+
+
+
+}(jQuery);

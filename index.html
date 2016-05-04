@@ -152,7 +152,14 @@
 	</div>
   <!--<script src="http://code.jquery.com/jquery-1.11.0.min.js" type="text/javascript" charset="utf-8"></script>-->
   <script src="js/jquery.min.js"></script>
-  <script src="js/selectChic.js"></script>
+  <script src="js/selectChic2.js"></script>
+  <script>
+    $('select').each(function() {
+      var select = new Select(this);
+      select.convertSelect(0);
+    });
+  </script>
   <script src="js/script.js"></script>
+
 </body>
 </html>
