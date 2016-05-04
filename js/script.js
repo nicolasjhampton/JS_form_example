@@ -91,27 +91,17 @@ $('#design').change(function(e) {
       }
     });
     // Recreate colorDiv
-    if(typeof Select == "function") {
+    if(typeof SelectChic == "function") {
       colorDiv.remove();
-      colorSelect.each(function() {
-        var select = new Select(this);
-        select.convertSelect(0);
-      });
+      new SelectChic(colorSelect).convertSelect(0);
     }
   }
   // Recreate designDiv, show last selected item
-  if(typeof Select == "function") {
+  if(typeof SelectChic == "function") {
     designDiv.remove();
-    designSelect.each(function() {
-      var select = new Select(this);
-      select.convertSelect(designOptionIndex);
-    });
+    new SelectChic(designSelect).convertSelect(designOptionIndex);
   }
 });
-
-
-
-
 
 
 var payment = $('#payment');
