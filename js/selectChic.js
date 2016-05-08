@@ -1,8 +1,8 @@
-var SelectChic = (function($) {
+var SelectChic = (function($, window, document) {
 'use strict';
 
 /*
- *  SelectChic Version 1.0.0
+ *  SelectChic Version 1.1.0
  *  Copyright Nicolas James Hampton 2016
  *  Style the "select" menus (drop down menus) on the form
  *  so they match the styling of the text fields.
@@ -21,25 +21,48 @@ var SelectChic = (function($) {
   var optionItemStyles;
   var selectDivStyles;
 
-  function Select($object, config) {
+  var defaults = {
+    "backgroundColor": $('input').css('background-color'),
+    "backgroundImage": "url(https://upload.wikimedia.org/wikipedia/commons/f/f1/MediaWiki_Vector_skin_action_arrow.svg)",
+    "selectPadding": ".1em",
+    "imageOffsetPixels": 20,
+    "selectDivString": '<div class="newSelect"></div>',
+    "selectListString": '<ul class="newSelectList"></ul>',
+    "optionString": '<li class="newOption"></li>',
+    "selectListStyles": {
+      "list-style": "none",
+      "padding-left": "0px",
+      "padding-right": "50px"
+    },
+    "optionItemStyles": {
+      "display": "none",
+      "border-bottom": "solid black 1px",
+      "margin-bottom": "10px",
+      "padding": "5px"
+    },
+    "selectDivStyles": {
+      "background-color": backgroundColor,
+      "background-image": backgroundImage,
+      "background-repeat": "no-repeat",
+      "padding": selectPadding
+    }
+  };
 
-    if(!config) { config = {}; }
+  function Select($object, options) {
     $.call(this);
+    if(!options) { options = {}; }
+    var config = $.extend( {}, defaults, options );
     selectElement = $object;
-    backgroundColor = config.backgroundColor || $('input').css('background-color');
-    backgroundImage = config.backgroundImage || "url(https://upload.wikimedia.org/wikipedia/commons/f/f1/MediaWiki_Vector_skin_action_arrow.svg)";
-    selectPadding = config.selectPadding || ".1em";
-    imageOffsetPixels = config.imageOffsetPixels || 20;
-    selectDivString = config.selectDivString || '<div class="newSelect"></div>';
-    selectListString = config.selectListString || '<ul class="newSelectList"></ul>';
-    optionString = config.optionString || '<li class="newOption"></li>';
-    selectListStyles = config.selectListStyles || {'list-style': 'none', 'padding-left': '0px', "padding-right": "50px"};
-    optionItemStyles = config.optionItemStyles || {'display': 'none', "border-bottom": "solid black 1px", "margin-bottom": "10px", "padding": "5px"};
-    selectDivStyles = config.selectDivStyles || {
-                            "background-color": backgroundColor,
-                            "background-image": backgroundImage,
-                            "background-repeat": "no-repeat",
-                            "padding": selectPadding };
+    backgroundColor = config.backgroundColor;
+    backgroundImage = config.backgroundImage;
+    selectPadding = config.selectPadding;
+    imageOffsetPixels = config.imageOffsetPixels;
+    selectDivString = config.selectDivString;
+    selectListString = config.selectListString;
+    optionString = config.optionString;
+    selectListStyles = config.selectListStyles;
+    optionItemStyles = config.optionItemStyles;
+    selectDivStyles = config.selectDivStyles;
   }
 
 
@@ -75,7 +98,7 @@ var SelectChic = (function($) {
   }
 
 
-  $.prototype.passAttr = function(sender) {
+  $.fn.passAttr = function(sender) {
     var that = this;
 
     Object.keys(sender.attributes).map(function(key) {
@@ -94,7 +117,7 @@ var SelectChic = (function($) {
 
     newSelect.append(selectList);
     selectList.css(selectListStyles);
-    console.log(selectElement);
+
     $(selectElement).children().each(function(index) {
 
       var optionLink = $(optionString);
@@ -114,7 +137,7 @@ var SelectChic = (function($) {
     // Hide the select and append the selectDiv after it
     $(selectElement).css({'display': 'none'});
     $(selectElement).after(newSelect);
-    // Style the new select div
+    // Style the new select div (note: browser must calculate image width in real time)
     var imageOffset = $(newSelect).width() - imageOffsetPixels;
     $(newSelect).css(selectDivStyles);
     $(newSelect).css("background-position", imageOffset);
@@ -123,4 +146,4 @@ var SelectChic = (function($) {
 
   return Select;
 
-})(jQuery);
+})(jQuery, window, document);
