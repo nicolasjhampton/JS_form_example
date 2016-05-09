@@ -91,15 +91,15 @@ $('#design').change(function(e) {
       }
     });
     // Recreate colorDiv
-    if(typeof SelectChic == "function") {
+    if(typeof $.configureSelect == "function") {
       colorDiv.remove();
-      new SelectChic(colorSelect).convertSelect(0);
+      $(colorSelect).convertSelect(0);
     }
   }
   // Recreate designDiv, show last selected item
-  if(typeof SelectChic == "function") {
+  if(typeof $.configureSelect == "function") {
     designDiv.remove();
-    new SelectChic(designSelect).convertSelect(designOptionIndex);
+    $(designSelect).convertSelect(designOptionIndex);
   }
 });
 

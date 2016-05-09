@@ -168,9 +168,11 @@
     // select6.convertSelect(0);
     // var select7 = new SelectChic($('select')[6]);
     // select7.convertSelect(0);
+    $.configureSelect();
     $('select').each(function() {
-      var select = new SelectChic(this);
-      select.convertSelect(0);
+      $(this).convertSelect(0);
+      // var select = new SelectChic(this);
+      // select.convertSelect(0);
     });
   </script>
   <script src="js/script.js"></script>
