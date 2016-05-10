@@ -70,6 +70,10 @@ legend {
 	width: 100%;
 }
 
+input {
+  border-radius: 10px;
+}
+
 label {
 	color: #000;
 	display: block;
