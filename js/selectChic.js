@@ -75,7 +75,7 @@
     });
 
     return $('select');
-  }
+  };
 
 
   /**
@@ -151,7 +151,7 @@
 
     selectDiv.css(host.selectDivBase)
              .css(host.selectDivStyles)
-             .resetBgPosition()
+             .resetBgPosition();
 
     selectBoxOptionSelected.prop("selected", true);
 
@@ -205,7 +205,7 @@
         "background-image": host.selectDivStyles["background-image"]
       });
     return this;
-  }
+  };
 
 
   /**
@@ -222,7 +222,7 @@
   $.fn.copyStyles = function(sender) {
     var obj = $(sender).css(host.matchStyles);
     return $(this).css(obj);
-  }
+  };
 
 
   /**
