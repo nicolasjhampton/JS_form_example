@@ -91,13 +91,13 @@ $('#design').change(function(e) {
       }
     });
     // Recreate colorDiv
-    if(typeof $.configureSelect == "function") {
+    if(typeof $.selectChic == "function") {
       colorDiv.remove();
       $(colorSelect).convertSelect(0);
     }
   }
   // Recreate designDiv, show last selected item
-  if(typeof $.configureSelect == "function") {
+  if(typeof $.selectChic == "function") {
     designDiv.remove();
     $(designSelect).convertSelect(designOptionIndex);
   }
