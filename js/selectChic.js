@@ -147,7 +147,7 @@
     thisOptionItem.show()
                   .css("margin-bottom", "0px")
                   .click(displayOptions)
-                  .siblings().hide();
+                  .siblings().off().hide();
 
     selectDiv.css(host.selectDivBase)
              .css(host.selectDivStyles)
