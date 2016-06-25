@@ -84,7 +84,6 @@
     return this.each(function() {
       $(this).convertSelect(0);
     });
-    //return $('select');
   };
 
 

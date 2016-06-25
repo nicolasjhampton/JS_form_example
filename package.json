@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/nicolasjhampton/JS_form_example/issues"
   },
-  "homepage": "https://github.com/nicolasjhampton/JS_form_example#readme"
+  "homepage": "https://github.com/nicolasjhampton/JS_form_example#readme",
+  "dependencies": {
+    "jquery": "^3.0.0"
+  }
 }
