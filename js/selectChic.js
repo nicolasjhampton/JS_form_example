@@ -1,13 +1,15 @@
 !function($, window, document) {
 'use strict';
 
-/*
- *  SelectChic Version 2.2.0
- *  Copyright Nicolas James Hampton 2016
- *  Style the "select" menus (drop down menus) on the form
- *  so they match the styling of the text fields.
- *
- */
+  /**
+   *  @file SelectChic
+   *  @version 1.0.0
+   *  @copyright Nicolas James Hampton 2016
+   *  @summary A jQuery plugin to style the "select" menus
+   *           (drop down menus) on the form so they
+   *           match the styling of the text fields.
+   *
+   */
 
   var host = {};
 
@@ -49,16 +51,21 @@
     "optionStyles": {}
   };
 
+  /**
+   * The jQuery plugin namespace.
+   * @external "jQuery.fn"
+   * @see {@link http://learn.jquery.com/plugins/|jQuery Plugins}
+   */
+
 
   /**
    * Configuration method for SelectChic
-   *
-   * @param options: configuration object for all settings
-   *
-   * @returns jQuery array of all select elements on page
+   * @method external:"jQuery.fn".selectChic
+   * @param {Object} options - configuration object for all settings
+   * @returns {jQueryObject} jQuery array of all select elements on page
    *
    */
-  $.selectChic = function(options) {
+  $.fn.selectChic = function(options) {
 
     if(!options) { options = {}; }
     var config = $.extend( {}, defaults, options );
@@ -74,7 +81,10 @@
       });
     });
 
-    return $('select');
+    return this.each(function() {
+      $(this).convertSelect(0);
+    });
+    //return $('select');
   };
 
 
@@ -82,12 +92,12 @@
    * jQuery method to hide current select element and
    * replace it with an div element containing an
    * unordered list linked to the select box.
-   *
+   * @method external:"jQuery.fn".convertSelect
    * @param activeOptionIndex: index of option element
    *                           to be displayed. Starts
    *                           at zero.
    *
-   * @returns jQuery object of newly created select box
+   * @returns {external:"jQuery".object} jQuery object of newly created select box
    *
    */
   $.fn.convertSelect = function(activeOptionIndex) {
@@ -129,10 +139,10 @@
   /**
    * Function ran by click event on option elements
    * on a open select menu. Closes the option menu,
-   * selects correct option in select box, and
-   * triggers select change event.
-   *
-   * @param e: click event object
+   * selects correct option in select box.
+   * @fires triggers select change event.
+   * @this The selected option element
+   * @param {event} e - click event object
    *
    */
   function optionSelect(e) {
@@ -164,8 +174,8 @@
    * on a closed select menu. Opens the option menu,
    * attaches optionSelect click events on all option
    * items, and repositions the select arrow and margins.
-   *
-   * @param e: click event object
+   * @param {event} e - click event object
+   * @this The selected option element
    *
    */
   function displayOptions(e) {
@@ -193,8 +203,8 @@
    * jQuery method to reposition the background image
    * based on the current width of the element and
    * desired offset. For select arrow positioning.
-   *
-   * @returns jQuery object
+   * @method external:"jQuery.fn".resetBgPosition
+   * @returns {external:"jQuery".object} jQuery object
    *
    */
   $.fn.resetBgPosition = function() {
@@ -213,10 +223,9 @@
    * listed in the matchStyles array and apply them
    * to the jQuery object running the function. Used
    * to help style the selectDiv's.
-   *
-   * @param sender: DOM element or css selector
-   *
-   * @returns jQuery object
+   * @method external:"jQuery.fn".copyStyles
+   * @param {Element|string} sender - DOM element or css selector
+   * @returns {external:"jQuery".object} jQuery object
    *
    */
   $.fn.copyStyles = function(sender) {
@@ -230,10 +239,9 @@
    * inner HTML on sender DOM element and apply
    * them to the jQuery object calling the method.
    * Used to fill in each new select option.
-   *
-   * @param sender: DOM element
-   *
-   * @returns jQuery object
+   * @method external:"jQuery.fn".copyElement
+   * @param {Element} sender - DOM element
+   * @returns {external:"jQuery".object} jQuery object
    *
    */
   $.fn.copyElement = function(sender) {
