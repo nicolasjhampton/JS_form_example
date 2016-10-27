@@ -264,6 +264,21 @@ var errorMessages = [
   "Invalid security code!"
 ];
 
+function luhnAlgorithm(input) {
+  var ccnumber = input.trim().split(/[-||\s]+/).join('').trim();
+  var re = /^[\d]+$/;
+  if(!re.test(ccnumber)) return false;
+  var ccArray = ccnumber.split('');
+
+  var offset = ccArray.length % 2;
+  var checksum = ccArray.map(num => parseInt(num))
+                        .map((num, index) => ((index + offset) % 2 == 0) ? num * 2 : num)
+                        .map(num => (num < 10) ? num : num - 9)
+                        .reduce((acc, next) => acc + next, 0);
+
+  return checksum % 10 == 0;
+}
+
 
 $('form').submit(function(e) {
 
@@ -279,7 +294,7 @@ $('form').submit(function(e) {
 
   if($('#payment').val() === "credit card") {
 
-   var cardNumValid = cardNumPattern.test($('#cc-num').val());
+   var cardNumValid = luhnAlgorithm($('#cc-num').val());
    var zipVaild = zipPattern.test($('#zip').val());
    var cvvValid = cvvPattern.test($('#cvv').val());
 
