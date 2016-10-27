@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/nicolasjhampton/JS_form_example/issues"
   },
-  "homepage": "https://github.com/nicolasjhampton/JS_form_example#readme"
+  "homepage": "https://github.com/nicolasjhampton/JS_form_example#readme",
+  "dependencies": {
+    "selectchic": "^2.0.2"
+  },
+  "devDependencies": {
+    "webpack": "^1.13.2"
+  }
 }
