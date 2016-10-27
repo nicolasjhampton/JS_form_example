@@ -1,6 +1,8 @@
-!function($) {
-  'use strict';
+'use strict';
 
+var $ = require('selectchic');
+
+$('select').selectChic().renderChic();
 
 /*
  *  For the T-Shirt color menu, only display the options that
@@ -91,13 +93,13 @@ $('#design').change(function(e) {
       }
     });
     // Recreate colorDiv
-    if(typeof $.selectChic == "function") {
+    if(typeof $.fn.selectChic == "function") {
       colorDiv.remove();
       $(colorSelect).convertSelect(0);
     }
   }
   // Recreate designDiv, show last selected item
-  if(typeof $.selectChic == "function") {
+  if(typeof $.fn.selectChic == "function") {
     designDiv.remove();
     $(designSelect).convertSelect(designOptionIndex);
   }
@@ -128,16 +130,16 @@ var checkbox = [
 
 
 /*
- *  Set focus on the first text field
- */
+*  Set focus on the first text field
+*/
 
 $('[type="text"]').first().focus();
 
 
 /*
- *  Reveal a text field when the "Other" option is selected
- *  from the "Job Role" drop down menu
- */
+*  Reveal a text field when the "Other" option is selected
+*  from the "Job Role" drop down menu
+*/
 
 
 $('#title').change(function() {
@@ -158,11 +160,11 @@ $('#title').change(function() {
 
 
 /*
- *  Activities:
- *  don't allow selection of a workshop at the same date and time
- *  disable the checkbox and visually indicate that the workshop
- *  in the competing time slot isn't available.
- */
+*  Activities:
+*  don't allow selection of a workshop at the same date and time
+*  disable the checkbox and visually indicate that the workshop
+*  in the competing time slot isn't available.
+*/
 
 checkbox.map(function(pair) {
   pair.a.change(function() {
@@ -194,10 +196,10 @@ checkbox.map(function(pair) {
 
 
 /*
- *  Activities Total:
- *  As a user selects activities to register for,
- *  a running total is listed below the list of checkboxes.
- */
+*  Activities Total:
+*  As a user selects activities to register for,
+*  a running total is listed below the list of checkboxes.
+*/
 
 activities.each(function(index) {
   $(this).change(function() {
@@ -214,10 +216,10 @@ activities.each(function(index) {
 
 
 /*
- *  Payment info:
- *  Display payment sections based on chosen payment option
- *
- */
+*  Payment info:
+*  Display payment sections based on chosen payment option
+*
+*/
 
 $('#credit-card').hide();
 $('#paypal').hide();
@@ -242,61 +244,56 @@ payment.change(function() {
 
 
 /*
- *  Validation
- *  Display error messages and don't let the user submit the form
- *
- */
+*  Validation
+*  Display error messages and don't let the user submit the form
+*
+*/
 
 var emailPattern = new RegExp(/^[_a-zA-Z0-9]+@[-_a-zA-Z0-9]+\.[-_a-zA-Z0-9]+$/);
 var cardNumPattern = new RegExp(/^[0-9]{4}-?[0-9]{4}-?[0-9]{4}-?[0-9]{4}$/);
 var zipPattern = new RegExp(/^[0-9]{5}$/);
 var cvvPattern = new RegExp(/^[0-9]{3}$/);
 
-var errorMessages =
-  [
-    "Your name is empty!",
-    "Please enter a vaild email: you@who.huh",
-    "You must select at least one activity.",
-    "Please select a payment option.",
-    "Invalid credit card number!",
-    "Please enter your 4 digit billing zip code",
-    "Invalid security code!"];
+var errorMessages = [
+  "Your name is empty!",
+  "Please enter a vaild email: you@who.huh",
+  "You must select at least one activity.",
+  "Please select a payment option.",
+  "Invalid credit card number!",
+  "Please enter your 4 digit billing zip code",
+  "Invalid security code!"
+];
 
 
- $('form').submit(function(e) {
+$('form').submit(function(e) {
 
-   var nameFilled = ($('#name').val() !== "");
+  var nameFilled = ($('#name').val() !== "");
 
-   var emailMatches = emailPattern.test($('#mail').val());
+  var emailMatches = emailPattern.test($('#mail').val());
 
-   var activitiesSelected = ($('input[type="checkbox"]:checked').length !== 0);
+  var activitiesSelected = ($('input[type="checkbox"]:checked').length !== 0);
 
-   var paymentSelected = ($('#payment').val() !== "select_method");
+  var paymentSelected = ($('#payment').val() !== "select_method");
 
-   var validation = [nameFilled, emailMatches, activitiesSelected, paymentSelected];
+  var validation = [nameFilled, emailMatches, activitiesSelected, paymentSelected];
 
-   if($('#payment').val() === "credit card") {
+  if($('#payment').val() === "credit card") {
 
-     var cardNumValid = cardNumPattern.test($('#cc-num').val());
-     var zipVaild = zipPattern.test($('#zip').val());
-     var cvvValid = cvvPattern.test($('#cvv').val());
+   var cardNumValid = cardNumPattern.test($('#cc-num').val());
+   var zipVaild = zipPattern.test($('#zip').val());
+   var cvvValid = cvvPattern.test($('#cvv').val());
 
-     validation.push(cardNumValid, zipVaild, cvvValid);
-   }
+   validation.push(cardNumValid, zipVaild, cvvValid);
+  }
 
-   if(validation.includes(false)) {
-     e.preventDefault();
-     var errors = "";
-     validation.map(function(validator, index) {
-       if(!validator) {
-         errors += errorMessages[index] + '\n';
-       }
-     });
-     alert(errors);
-   }
- });
-
-
-}(jQuery);
-
-// call apply and bind
+  if(validation.includes(false)) {
+   e.preventDefault();
+   var errors = "";
+   validation.map(function(validator, index) {
+     if(!validator) {
+       errors += errorMessages[index] + '\n';
+     }
+   });
+   alert(errors);
+  }
+});

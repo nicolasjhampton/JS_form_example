@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/nicolasjhampton/JS_form_example#readme",
   "dependencies": {
-    "jquery": "^3.0.0"
+    "selectchic": "^2.0.2"
+  },
+  "devDependencies": {
+    "webpack": "^1.13.2"
   }
 }
