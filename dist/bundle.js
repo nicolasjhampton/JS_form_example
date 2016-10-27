@@ -65,21 +65,21 @@
 
 	/* helper function for design event handler */
 	function restoreColorOptions() {
-	var colorChildren = colorSelect.children();
+	  var colorChildren = colorSelect.children();
 
-	// If only three of the six options are left...
-	if(colorChildren.length === 3) {
-	  // check if the first option is still a punOption...
-	  if($(colorChildren[0]).val() === "cornflowerblue") {
-	    colorSelect.append(heartOptions);
-	  } else { // else if the first option is not a punOption...
-	    colorSelect.append(punsOptions);
+	  // If only three of the six options are left...
+	  if(colorChildren.length === 3) {
+	    // check if the first option is still a punOption...
+	    if($(colorChildren[0]).val() === "cornflowerblue") {
+	      colorSelect.append(heartOptions);
+	    } else { // else if the first option is not a punOption...
+	      colorSelect.append(punsOptions);
+	    }
+	  // else if all the options are gone...
+	  } else if (colorChildren.length === 0) {
+	    // add all the options back.
+	    colorSelect.append(punsOptions).append(heartOptions);
 	  }
-	// else if all the options are gone...
-	} else if (colorChildren.length === 0) {
-	  // add all the options back.
-	  colorSelect.append(punsOptions).append(heartOptions);
-	}
 	}
 
 	// Hides the color display initially, as no design has been chosen
@@ -87,68 +87,68 @@
 
 	// On change listener for the design select
 	$('#design').change(function(e) {
-	e.stopPropagation();
+	  e.stopPropagation();
 
-	var designSelect = $(this);
-	var designDiv = designSelect.next();
-	var designListItems = designDiv.children().children();
-	var designValue = designSelect.val() === null ? "" : designSelect.val();
-	var colorDiv = colorSelect.next();
-	var colorLabel = colorSelect.prev();
-	var designOptionIndex;
+	  var designSelect = $(this);
+	  var designDiv = designSelect.next();
+	  var designListItems = designDiv.children().children();
+	  var designValue = designSelect.val() === null ? "" : designSelect.val();
+	  var colorDiv = colorSelect.next();
+	  var colorLabel = colorSelect.prev();
+	  var designOptionIndex;
 
-	// Remove all event handlers from the old designDiv list items
-	designListItems.off();
-	// Find list item that was selected and store it's array position
-	designListItems.each(function(index) {
-	  if($(this).attr('value') === designValue) {
-	    designOptionIndex = index;
-	    return false;
-	  }
-	});
-
-	restoreColorOptions();
-
-	if (designValue === "") {
-	  // Hide the color options display if there's not a design picked
-	  colorDiv.hide();
-	  colorLabel.hide();
-
-	} else {
-	  // show color options display
-	  colorDiv.show();
-	  colorLabel.show();
-
-	  // detach and store all the option elements for color select element
-	  var allColorOptions = colorSelect.children().detach();
-
-	  allColorOptions.each(function() { // Go through each option element
-	    var colorOption = $(this);
-	    var colorOptionValue = colorOption.val();
-
-	    if(designValue === "js puns" &&
-	       jsPunsValues.indexOf(colorOptionValue) !== -1) {
-
-	        colorSelect.append(colorOption);
-
-	    } else if
-	      (designValue === "heart js" &&
-	       jsHeartValues.indexOf(colorOptionValue) !== -1) {
-
-	        colorSelect.append(colorOption);
+	  // Remove all event handlers from the old designDiv list items
+	  designListItems.off();
+	  // Find list item that was selected and store it's array position
+	  designListItems.each(function(index) {
+	    if($(this).attr('value') === designValue) {
+	      designOptionIndex = index;
+	      return false;
 	    }
 	  });
-	  // Recreate colorDiv
-	  if(typeof $.fn.selectChic == "function") {
-	    colorDiv.remove();
-	    $(colorSelect).convertSelect(0);
+
+	  restoreColorOptions();
+
+	  if (designValue === "") {
+	    // Hide the color options display if there's not a design picked
+	    colorDiv.hide();
+	    colorLabel.hide();
+
+	  } else {
+	    // show color options display
+	    colorDiv.show();
+	    colorLabel.show();
+
+	    // detach and store all the option elements for color select element
+	    var allColorOptions = colorSelect.children().detach();
+
+	    allColorOptions.each(function() { // Go through each option element
+	      var colorOption = $(this);
+	      var colorOptionValue = colorOption.val();
+
+	      if(designValue === "js puns" &&
+	         jsPunsValues.indexOf(colorOptionValue) !== -1) {
+
+	          colorSelect.append(colorOption);
+
+	      } else if
+	        (designValue === "heart js" &&
+	         jsHeartValues.indexOf(colorOptionValue) !== -1) {
+
+	          colorSelect.append(colorOption);
+	      }
+	    });
+	    // Recreate colorDiv
+	    if(typeof $.fn.selectChic == "function") {
+	      colorDiv.remove();
+	      $(colorSelect).convertSelect(0);
+	    }
 	  }
-	}
-	// Recreate designDiv, show last selected item
-	if(typeof $.fn.selectChic == "function") {
-	  designDiv.remove();
-	  $(designSelect).convertSelect(designOptionIndex);
-	}
+	  // Recreate designDiv, show last selected item
+	  if(typeof $.fn.selectChic == "function") {
+	    designDiv.remove();
+	    $(designSelect).convertSelect(designOptionIndex);
+	  }
 	});
 
 
@@ -164,14 +164,14 @@
 	var totalCost = 0;
 
 	var checkbox = [
-	{
-	  "a":jsFrameworks,
-	  "b":express
-	},
-	{
-	  "a":jsLibs,
-	  "b":node
-	}
+	  {
+	    "a":jsFrameworks,
+	    "b":express
+	  },
+	  {
+	    "a":jsLibs,
+	    "b":node
+	  }
 	];
 
 
@@ -189,19 +189,19 @@
 
 
 	$('#title').change(function() {
-	if($(this).val() === "other") {
-	  otherTitle.hide();
-	  $(this).parent().append(otherTitle);
-	  otherTitle.fadeIn('slow');
-	} else {
-	  var label = $('#other-title').prev();
-	  $('#other-title').fadeOut('slow', function() {
-	    $(label).hide(function() {
-	      $('#other-title').remove();
-	      $(label).remove();
+	  if($(this).val() === "other") {
+	    otherTitle.hide();
+	    $(this).parent().append(otherTitle);
+	    otherTitle.fadeIn('slow');
+	  } else {
+	    var label = $('#other-title').prev();
+	    $('#other-title').fadeOut('slow', function() {
+	      $(label).hide(function() {
+	        $('#other-title').remove();
+	        $(label).remove();
+	      });
 	    });
-	  });
-	}
+	  }
 	});
 
 
@@ -213,31 +213,31 @@
 	*/
 
 	checkbox.map(function(pair) {
-	pair.a.change(function() {
-	  if($(this).prop('checked') === true) {
-	    $(this).parent().css('color', 'black');
-	    pair.b
-	      .prop('checked', false)
-	      .prop('disabled', true)
-	      .parent()
-	      .css('color', 'rgba(0,0,0,.5)');
-	  } else {
-	    pair.b.prop('disabled', false).parent().css('color', 'black');
-	  }
-	});
+	  pair.a.change(function() {
+	    if($(this).prop('checked') === true) {
+	      $(this).parent().css('color', 'black');
+	      pair.b
+	        .prop('checked', false)
+	        .prop('disabled', true)
+	        .parent()
+	        .css('color', 'rgba(0,0,0,.5)');
+	    } else {
+	      pair.b.prop('disabled', false).parent().css('color', 'black');
+	    }
+	  });
 
-	pair.b.change(function() {
-	  if($(this).prop('checked') === true) {
-	    $(this).parent().css('color', 'black');
-	    pair.a
-	      .prop('checked', false)
-	      .prop('disabled', true)
-	      .parent()
-	      .css('color', 'rgba(0,0,0,.5)');
-	  } else {
-	    pair.a.prop('disabled', false).parent().css('color', 'black');
-	  }
-	});
+	  pair.b.change(function() {
+	    if($(this).prop('checked') === true) {
+	      $(this).parent().css('color', 'black');
+	      pair.a
+	        .prop('checked', false)
+	        .prop('disabled', true)
+	        .parent()
+	        .css('color', 'rgba(0,0,0,.5)');
+	    } else {
+	      pair.a.prop('disabled', false).parent().css('color', 'black');
+	    }
+	  });
 	});
 
 
@@ -248,16 +248,16 @@
 	*/
 
 	activities.each(function(index) {
-	$(this).change(function() {
-	  var isChecked = $(this).prop('checked');
-	  var cost = index === 0 ? 200 : 100;
-	  var change = isChecked ? cost : -cost;
-	  totalCost += change;
-	  $('.totalCost').remove();
-	  if(totalCost !== 0) {
-	    $('.activities').append('<h2 class="totalCost">Your total cost is currently $' + totalCost + ' dollars.</h2>');
-	  }
-	});
+	  $(this).change(function() {
+	    var isChecked = $(this).prop('checked');
+	    var cost = index === 0 ? 200 : 100;
+	    var change = isChecked ? cost : -cost;
+	    totalCost += change;
+	    $('.totalCost').remove();
+	    if(totalCost !== 0) {
+	      $('.activities').append('<h2 class="totalCost">Your total cost is currently $' + totalCost + ' dollars.</h2>');
+	    }
+	  });
 	});
 
 
@@ -272,20 +272,20 @@
 	$('#bitcoin').hide();
 
 	payment.change(function() {
-	var that = $(this).val();
-	if (that === "credit card") {
-	  $('#credit-card').show();
-	  $('#paypal').hide();
-	  $('#bitcoin').hide();
-	} else if (that === "paypal"){
-	  $('#credit-card').hide();
-	  $('#paypal').show();
-	  $('#bitcoin').hide();
-	} else if (that === "bitcoin"){
-	  $('#credit-card').hide();
-	  $('#paypal').hide();
-	  $('#bitcoin').show();
-	}
+	  var that = $(this).val();
+	  if (that === "credit card") {
+	    $('#credit-card').show();
+	    $('#paypal').hide();
+	    $('#bitcoin').hide();
+	  } else if (that === "paypal"){
+	    $('#credit-card').hide();
+	    $('#paypal').show();
+	    $('#bitcoin').hide();
+	  } else if (that === "bitcoin"){
+	    $('#credit-card').hide();
+	    $('#paypal').hide();
+	    $('#bitcoin').show();
+	  }
 	});
 
 
@@ -310,6 +310,21 @@
 	  "Invalid security code!"
 	];
 
+	function luhnAlgorithm(input) {
+	  var ccnumber = input.trim().split(/[-||\s]+/).join('').trim();
+	  var re = /^[\d]+$/;
+	  if(!re.test(ccnumber)) return false;
+	  var ccArray = ccnumber.split('');
+
+	  var offset = ccArray.length % 2;
+	  var checksum = ccArray.map(num => parseInt(num))
+	                        .map((num, index) => ((index + offset) % 2 == 0) ? num * 2 : num)
+	                        .map(num => (num < 10) ? num : num - 9)
+	                        .reduce((acc, next) => acc + next, 0);
+
+	  return checksum % 10 == 0;
+	}
+
 
 	$('form').submit(function(e) {
 
@@ -325,7 +340,7 @@
 
 	  if($('#payment').val() === "credit card") {
 
-	   var cardNumValid = cardNumPattern.test($('#cc-num').val());
+	   var cardNumValid = luhnAlgorithm($('#cc-num').val());
 	   var zipVaild = zipPattern.test($('#zip').val());
 	   var cvvValid = cvvPattern.test($('#cvv').val());
 
@@ -343,9 +358,6 @@
 	   alert(errors);
 	  }
 	});
-
-
-	// call apply and bind
 
 
 /***/ },
